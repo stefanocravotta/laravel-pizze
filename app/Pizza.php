@@ -7,6 +7,11 @@ use Illuminate\Support\Str;
 
 class Pizza extends Model
 {
+
+    public function ingredients(){
+        return $this->belongsToMany('App\Ingredient');
+    }
+
     protected $fillable = [
         'nome',
         'slug',
@@ -14,7 +19,7 @@ class Pizza extends Model
         'popolarita',
         'immagine',
         'prezzo',
-        'vegetariana'
+        'vegetariana',
     ];
 
     public static function generateSlug($nome){

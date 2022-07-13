@@ -35,15 +35,19 @@ const app = new Vue({
 
 $().ready(function(){
 
-    formValidator($('#pizzaCreateForm'));
-    formValidator($('#pizzaEditForm'));
+    pizzaFormValidator($('#pizzaCreateForm'));
+    pizzaFormValidator($('#pizzaEditForm'));
 
-    function formValidator(form){
+    ingredientFormValidator($('#ingredientCreateForm'));
+    ingredientFormValidator($('#ingredientEditForm'));
+
+    function pizzaFormValidator(form){
         form.submit(function(event){
             let errors = false;
             $('#error-nome').hide();
             $('#error-descrizione').hide();
             $('#error-prezzo').hide();
+            $('#error-ingredients').hide();
 
             // Campo nome
                 if($('#nome').val().length === 0){
@@ -100,6 +104,14 @@ $().ready(function(){
                 }
             //
 
+            //ci credeva solo Manu e aveva ragione.
+            checked = $("input[type=checkbox]:checked").length;
+
+            if(!checked) {
+                $('#error-ingredients').show('slow').text('Almeno un ingrediente deve essere selezionato').fadeOut(4000);
+                errors = true;
+            }
+
             if(errors === true){
                 event.preventDefault();
             }
@@ -108,4 +120,35 @@ $().ready(function(){
 
     }
 
+    function ingredientFormValidator(form){
+        form.submit(function(event){
+            let errors = false;
+            $('#error-name').hide();
+
+            if($('#name').val().length === 0){
+                $('#error-name').show('slow').text('Il campo nome è obbligatorio').fadeOut(4000);
+                $('#name').addClass('is-invalid');
+                errors = true;
+            }
+            else if($('#name').val().length < 3){
+                $('#error-name').show('slow').text('Il campo nome deve avere minimo 3 caratteri').fadeOut(4000);
+                $('#name').addClass('is-invalid');
+                errors = true;
+            }
+            else if($('#name').val().length > 50){
+                $('#error-name').show('slow').text('Il campo nome può avere massimo 50 caratteri').fadeOut(4000);
+                $('#name').addClass('is-invalid');
+                errors = true;
+            }else{
+                $('#name').removeClass('is-invalid')
+            }
+
+
+            if(errors === true){
+                event.preventDefault();
+            }
+
+        });
+
+    }
 });
