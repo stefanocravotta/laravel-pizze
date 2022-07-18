@@ -9,6 +9,7 @@ import HomeComp from './components/pages/HomeComp';
 import ProductsComp from './components/pages/ProductsComp';
 import AboutComp from './components/pages/AboutComp';
 import ContactsComp from './components/pages/ContactsComp';
+import PizzaDetail from './components/pages/PizzaDetail';
 
 
 const router = new VueRouter({
@@ -35,6 +36,11 @@ const router = new VueRouter({
             path: '/contatti',
             name: 'contacts',
             component : ContactsComp
+        },
+        {
+            path: '/dettaglio-pizza',
+            name: 'details',
+            component : PizzaDetail
         }
     ]
 })
