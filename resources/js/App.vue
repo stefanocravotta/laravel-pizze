@@ -2,8 +2,8 @@
     <div>
         <HeaderComp />
 
-        <div class="container">
-            <main>
+        <div>
+            <main class="container">
                 <router-view></router-view>
             </main>
         </div>

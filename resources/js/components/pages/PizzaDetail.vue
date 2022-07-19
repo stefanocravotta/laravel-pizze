@@ -4,7 +4,10 @@
         <div class="card" style="min-width: 250px;">
                 <img :src="pizza.immagine ? '/image/' + pizza.immagine : '/image/scatola_pizza.png' " class="card-img-top" alt="">
             <div class="card-body">
-                <h5 class="card-title">{{pizza.nome}}</h5>
+                <div class="d-flex justify-content-between">
+                    <h5 class="card-title">{{pizza.nome}}</h5>
+                    <p class="text-right">{{pizza.prezzo}} &euro;</p>
+                </div>
                 <p class="card-text">{{pizza.descrizione}}</p>
             </div>
             <ul class="list-group list-group-flush list-unstyled pl-3 py-2">

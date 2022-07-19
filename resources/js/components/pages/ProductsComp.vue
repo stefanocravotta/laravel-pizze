@@ -5,27 +5,32 @@
             <LoaderComp />
         </div>
 
-        <div class="d-flex justify-content-between flex-wrap pt-3" v-else>
-            <PizzaComp
-                v-for="pizza in pizzas"
-                :key="`pizza${pizza.id}`"
-                :pizza="pizza"
+        <div v-else>
+            <NavComp
+            :ingredients="ingredients"
             />
+            <div class="d-flex justify-content-between flex-wrap pt-3" >
+                <PizzaComp
+                    v-for="pizza in pizzas"
+                    :key="`pizza${pizza.id}`"
+                    :pizza="pizza"
+                />
+            </div>
         </div>
-        <div>
+        <div id="pagination" class="d-flex justify-content-center">
 
             <button
                 @click="getApi(1)"
                 :disabled="pagination.current === 1"
-                class="btn btn-dark">
-                <i class="fa-solid fa-backward-fast"></i>
+                class="btn btn-dark mr-2">
+                <i class="fa-solid fa-angles-left"></i>
             </button>
 
             <button
                 @click="getApi(pagination.current - 1)"
                 :disabled="pagination.current === 1"
-                class="btn btn-dark">
-                <i class="fa-solid fa-circle-arrow-left"></i>
+                class="btn btn-dark mr-2">
+                <i class="fa-solid fa-angle-left"></i>
             </button>
 
             <button
@@ -39,15 +44,15 @@
             <button
                 @click="getApi(pagination.current + 1)"
                 :disabled="pagination.current === pagination.last"
-                class="btn btn-dark">
-                <i class="fa-solid fa-circle-arrow-right"></i>
+                class="btn btn-dark mx-2">
+                <i class="fa-solid fa-angle-right"></i>
             </button>
 
             <button
                 @click="getApi(pagination.last)"
                 :disabled="pagination.current === pagination.last"
                 class="btn btn-dark">
-                <i class="fa-solid fa-forward-fast"></i>
+                <i class="fa-solid fa-angles-right"></i>
             </button>
 
         </div>
@@ -59,9 +64,10 @@
 import PizzaComp from '../partials/PizzaComp.vue';
 import LoaderComp from '../partials/LoaderComp.vue';
 import { apiUrl } from '../../data/config';
+import NavComp from '../partials/NavComp.vue';
     export default {
     name: "ProductsComp",
-    components: { PizzaComp, LoaderComp },
+    components: { PizzaComp, LoaderComp, NavComp },
     data() {
         return {
             apiUrl,
@@ -82,11 +88,12 @@ import { apiUrl } from '../../data/config';
             axios.get(this.apiUrl + '?page=' + page)
             .then(r => {
                 this.pizzas = r.data.pizzas.data;
-                this.ingredients = r.data.ingredients.data;
+                this.ingredients = r.data.ingredients;
                 this.pagination = {
                     current : r.data.pizzas.current_page,
                     last : r.data.pizzas.last_page,
                 }
+                console.log(this.ingredients)
             })
         }
     },
