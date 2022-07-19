@@ -38,7 +38,7 @@ const router = new VueRouter({
             component : ContactsComp
         },
         {
-            path: '/dettaglio-pizza',
+            path: '/dettaglio-pizza/:slug',
             name: 'details',
             component : PizzaDetail
         }

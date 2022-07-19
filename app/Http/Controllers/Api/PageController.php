@@ -15,4 +15,10 @@ class PageController extends Controller
 
         return response()->json(compact('pizzas', 'ingredients'));
     }
+
+    public function show($slug){
+        $pizza = Pizza::where('slug', $slug)->with('ingredients')->first();
+
+        return response()->json($pizza);
+    }
 }

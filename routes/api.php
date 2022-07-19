@@ -8,5 +8,6 @@ Route::namespace('Api')
     ->prefix('pizzas')
     ->group(function(){
         Route::get('/', 'PageController@index');
+        Route::get('/{slug}', 'PageController@show');
     });
 

@@ -1976,8 +1976,29 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _data_config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../data/config */ "./resources/js/data/config.js");
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'PizzaDetail'
+  name: 'PizzaDetail',
+  data: function data() {
+    return {
+      apiUrl: _data_config__WEBPACK_IMPORTED_MODULE_0__["apiUrl"],
+      pizza: {}
+    };
+  },
+  mounted: function mounted() {
+    this.getApi();
+  },
+  methods: {
+    getApi: function getApi() {
+      var _this = this;
+
+      axios.get(this.apiUrl + '/' + this.$route.params.slug).then(function (r) {
+        _this.pizza = r.data;
+        console.log(_this.pizza);
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -2016,13 +2037,13 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    this.getApi();
+    this.getApi(1);
   },
   methods: {
-    getApi: function getApi() {
+    getApi: function getApi(page) {
       var _this = this;
 
-      axios.get(this.apiUrl).then(function (r) {
+      axios.get(this.apiUrl + '?page=' + page).then(function (r) {
         _this.pizzas = r.data.pizzas.data;
         _this.ingredients = r.data.ingredients.data;
         _this.pagination = {
@@ -2090,6 +2111,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'PizzaComp',
   props: {
@@ -2227,14 +2251,65 @@ var render = function render() {
   var _vm = this,
       _c = _vm._self._c;
 
-  return _vm._m(0);
+  return _c("div", [_c("h1", [_vm._v("Dettaglio pizza")]), _vm._v(" "), _c("div", {
+    staticClass: "card",
+    staticStyle: {
+      "min-width": "250px"
+    }
+  }, [_c("img", {
+    staticClass: "card-img-top",
+    attrs: {
+      src: _vm.pizza.immagine ? "/image/" + _vm.pizza.immagine : "/image/scatola_pizza.png",
+      alt: ""
+    }
+  }), _vm._v(" "), _c("div", {
+    staticClass: "card-body"
+  }, [_c("h5", {
+    staticClass: "card-title"
+  }, [_vm._v(_vm._s(_vm.pizza.nome))]), _vm._v(" "), _c("p", {
+    staticClass: "card-text"
+  }, [_vm._v(_vm._s(_vm.pizza.descrizione))])]), _vm._v(" "), _c("ul", {
+    staticClass: "list-group list-group-flush list-unstyled pl-3 py-2"
+  }, [_vm._m(0), _vm._v(" "), _vm._l(_vm.pizza.ingredients, function (ingredient) {
+    return _c("li", {
+      key: "ingredient".concat(ingredient.slug),
+      staticClass: "pl-3"
+    }, [_vm._v(_vm._s(ingredient.name))]);
+  })], 2), _vm._v(" "), _vm._m(1)]), _vm._v(" "), _c("div", {
+    staticClass: "btn btn-dark"
+  }, [_c("router-link", {
+    attrs: {
+      to: {
+        name: "pizzas"
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fa-solid fa-circle-arrow-left"
+  })])], 1)]);
 };
 
 var staticRenderFns = [function () {
   var _vm = this,
       _c = _vm._self._c;
 
-  return _c("div", [_c("h1", [_vm._v("Dettaglio pizza")])]);
+  return _c("li", [_c("h4", [_vm._v("Ingredienti :")])]);
+}, function () {
+  var _vm = this,
+      _c = _vm._self._c;
+
+  return _c("div", {
+    staticClass: "card-body"
+  }, [_c("a", {
+    staticClass: "btn btn-success",
+    attrs: {
+      href: "#"
+    }
+  }, [_vm._v("Aggiungi al carrello")]), _vm._v(" "), _c("a", {
+    staticClass: "btn btn-danger",
+    attrs: {
+      href: "#"
+    }
+  }, [_vm._v("Compra ora")])]);
 }];
 render._withStripped = true;
 
@@ -2265,7 +2340,68 @@ var render = function render() {
         pizza: pizza
       }
     });
-  }), 1)]);
+  }), 1), _vm._v(" "), _c("div", [_c("button", {
+    staticClass: "btn btn-dark",
+    attrs: {
+      disabled: _vm.pagination.current === 1
+    },
+    on: {
+      click: function click($event) {
+        return _vm.getApi(1);
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fa-solid fa-backward-fast"
+  })]), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-dark",
+    attrs: {
+      disabled: _vm.pagination.current === 1
+    },
+    on: {
+      click: function click($event) {
+        return _vm.getApi(_vm.pagination.current - 1);
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fa-solid fa-circle-arrow-left"
+  })]), _vm._v(" "), _vm._l(_vm.pagination.last, function (i) {
+    return _c("button", {
+      key: i,
+      staticClass: "btn",
+      attrs: {
+        disabled: _vm.pagination.current === i
+      },
+      on: {
+        click: function click($event) {
+          return _vm.getApi(i);
+        }
+      }
+    }, [_vm._v(_vm._s(i) + "\n            ")]);
+  }), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-dark",
+    attrs: {
+      disabled: _vm.pagination.current === _vm.pagination.last
+    },
+    on: {
+      click: function click($event) {
+        return _vm.getApi(_vm.pagination.current + 1);
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fa-solid fa-circle-arrow-right"
+  })]), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-dark",
+    attrs: {
+      disabled: _vm.pagination.current === _vm.pagination.last
+    },
+    on: {
+      click: function click($event) {
+        return _vm.getApi(_vm.pagination.last);
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fa-solid fa-forward-fast"
+  })])], 2)]);
 };
 
 var staticRenderFns = [];
@@ -2439,7 +2575,16 @@ var render = function render() {
     staticClass: "card-title"
   }, [_vm._v(_vm._s(_vm.pizza.nome))]), _vm._v(" "), _c("p", {
     staticClass: "card-text"
-  }, [_vm._v(_vm._s(_vm.pizza.descrizione ? _vm.pizza.descrizione : "Nessuna descrizione"))])])]);
+  }, [_vm._v(_vm._s(_vm.pizza.descrizione ? _vm.pizza.descrizione : "Nessuna descrizione"))]), _vm._v(" "), _c("router-link", {
+    attrs: {
+      to: {
+        name: "details",
+        params: {
+          slug: _vm.pizza.slug
+        }
+      }
+    }
+  }, [_vm._v("Mostra")])], 1)]);
 };
 
 var staticRenderFns = [];
@@ -54067,8 +54212,8 @@ var apiUrl = '/api/pizzas';
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./routes */ "./resources/js/routes.js");
-/* harmony import */ var _App_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./App.vue */ "./resources/js/App.vue");
+/* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./routes */ "./resources/js/routes.js");
+/* harmony import */ var _App_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./App.vue */ "./resources/js/App.vue");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
@@ -54077,9 +54222,9 @@ window.Axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js")
 
 var app = new Vue({
   el: '#app',
-  router: _routes__WEBPACK_IMPORTED_MODULE_1__["default"],
+  router: _routes__WEBPACK_IMPORTED_MODULE_0__["default"],
   render: function render(h) {
-    return h(_App_vue__WEBPACK_IMPORTED_MODULE_2__["default"]);
+    return h(_App_vue__WEBPACK_IMPORTED_MODULE_1__["default"]);
   }
 });
 
@@ -54130,7 +54275,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
     name: 'contacts',
     component: _components_pages_ContactsComp__WEBPACK_IMPORTED_MODULE_5__["default"]
   }, {
-    path: '/dettaglio-pizza',
+    path: '/dettaglio-pizza/:slug',
     name: 'details',
     component: _components_pages_PizzaDetail__WEBPACK_IMPORTED_MODULE_6__["default"]
   }]

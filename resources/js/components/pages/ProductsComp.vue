@@ -12,6 +12,45 @@
                 :pizza="pizza"
             />
         </div>
+        <div>
+
+            <button
+                @click="getApi(1)"
+                :disabled="pagination.current === 1"
+                class="btn btn-dark">
+                <i class="fa-solid fa-backward-fast"></i>
+            </button>
+
+            <button
+                @click="getApi(pagination.current - 1)"
+                :disabled="pagination.current === 1"
+                class="btn btn-dark">
+                <i class="fa-solid fa-circle-arrow-left"></i>
+            </button>
+
+            <button
+                v-for="i in pagination.last"
+                :key="i"
+                @click="getApi(i)"
+                :disabled="pagination.current === i"
+                class="btn">{{i}}
+            </button>
+
+            <button
+                @click="getApi(pagination.current + 1)"
+                :disabled="pagination.current === pagination.last"
+                class="btn btn-dark">
+                <i class="fa-solid fa-circle-arrow-right"></i>
+            </button>
+
+            <button
+                @click="getApi(pagination.last)"
+                :disabled="pagination.current === pagination.last"
+                class="btn btn-dark">
+                <i class="fa-solid fa-forward-fast"></i>
+            </button>
+
+        </div>
 
     </div>
 </template>
@@ -36,11 +75,11 @@ import { apiUrl } from '../../data/config';
         }
     },
     mounted() {
-        this.getApi()
+        this.getApi(1)
     },
     methods: {
-        getApi(){
-            axios.get(this.apiUrl)
+        getApi(page){
+            axios.get(this.apiUrl + '?page=' + page)
             .then(r => {
                 this.pizzas = r.data.pizzas.data;
                 this.ingredients = r.data.ingredients.data;
